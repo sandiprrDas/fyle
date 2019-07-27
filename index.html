@@ -384,11 +384,9 @@ $(document).ready(function() {
 				source: employee_list,
 				autoSelect: true,
 				afterSelect: function(data) {
-					debugger;
 					$('.typeahead li').attr('data_emp_uuid', data.id);
 					var active_attr = $('.typeahead li.active').attr('data_emp_uuid');
 					var emplNameurl = 'https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI?bank_id=' + active_attr;
-					// getMonthlyLog(emplNameurl);
 					renderTable(emplNameurl);
 					// dataTable.clear().draw();
 					// dataTable.rows.add(data); // Add new data
