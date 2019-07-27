@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Bank Name</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.js"></script>
+    <style>
+      table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td,
+th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+#myInput {
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	width: 100%;
+	font-size: 16px;
+	padding: 8px 20px 8px 40px;
+	border: 1px solid #ddd;
+	margin-bottom: 12px;
+}
+#main_container {
+	margin-top: 100px;
+}
+i.material-icons {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	color: gray;
+}
+#city_name_list {
+	height: 230px;
+	display: block;
+	overflow-y: auto;
+}
+#city_name_list li {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+.pagination li:hover {
+	cursor: pointer;
+}
+#example_info {
+	display: none;
+}
+#example,
+.fixed_header {
+	width: 100%;
+	background-color: #f3f3f3;
+}
+#example {
+	border: 1px solid #ddd !important;
+}
+#example tbody tr {
+	font-size: 13px;
+	font-weight: 600;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 5.08;
+	letter-spacing: normal;
+	text-align: center;
+	color: #283655;
+}
+#example_length {
+	margin-top: 15px;
+}
+#example_length {
+	width: 100% !important;
+	box-shadow: 0 0px 6px 0 rgba(0, 0, 0, 0.16);
+	top: 20px !important;
+}
+#example_length label {
+	line-height: 3;
+	padding-left: 10px;
+}
+#example_paginate {
+	margin-top: 0px !important;
+	position: absolute;
+	/* top: -16px; */
+	right: 0;
+	margin-top: 34px;
+	padding-top: 30px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.next {
+	padding-left: 25px !important;
+	font-weight: 600 !important;
+	color: #0275d8 !important;
+	background: transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:after {
+	content: ' >' !important;
+	font-weight: bold !important;
+	margin-left: 5px !important;
+}
+.next:after {
+	content: '>';
+	font-weight: bold;
+	margin-left: 5px;
+}
+.previous:before {
+	content: '< ';
+	font-weight: bold;
+	margin-right: 5px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:before {
+	content: '< ' !important;
+	font-weight: bold !important;
+	margin-right: 5px !important;
+}
+#example_paginate a {
+	text-transform: capitalize !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+	color: #c7d7e6 !important;
+	margin-right: 10px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+	padding-right: 25px !important;
+	font-weight: 600 !important;
+	color: #0275d8 !important;
+	background: transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+	background: #2094ff !important;
+	color: #ffffff !important;
+	font-weight: 600 !important;
+	border: 0 !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	text-transform: uppercase !important;
+	padding: 0 !important;
+	color: #0275d8 !important;
+}
+.dataTables_paginate span {
+	display: inline-block !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+	border-radius: 2px !important;
+	background-color: #283655 !important;
+}
+#example_paginate span a {
+	height: 23px !important;
+	width: 25px !important;
+	line-height: 23px !important;
+	margin-right: 0px !important;
+}
+.big {
+	font-size: 1.2em;
+}
+
+.small {
+	font-size: .7em;
+}
+
+/* Custom dropdown */
+.custom-dropdown {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 10px;
+}
+
+.custom-dropdown select {
+	background-color: #ddd;
+	color: #000;
+	font-size: inherit;
+	padding: .5em;
+	padding-right: 2.5em;
+	border: 0;
+	margin: 0;
+	border-radius: 3px;
+	text-indent: 0.01px;
+	text-overflow: '';
+	-webkit-appearance: button; /* hide default arrow in chrome OSX */
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+}
+
+.custom-dropdown::after {
+	/*  Custom dropdown arrow */
+	content: "\25BC";
+	height: 1em;
+	font-size: .625em;
+	line-height: 1;
+	right: 1.2em;
+	top: 50%;
+	margin-top: -.5em;
+}
+
+.custom-dropdown::before {
+	/*  Custom dropdown arrow cover */
+	width: 2em;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border-radius: 0 3px 3px 0;
+}
+
+.custom-dropdown select[disabled] {
+	color: rgba(0, 0, 0, .3);
+}
+
+.custom-dropdown select[disabled]::after {
+	color: rgba(0, 0, 0, .1);
+}
+
+.custom-dropdown::before {
+	background-color: rgba(0, 0, 0, .15);
+}
+
+.custom-dropdown::after {
+	color: rgba(0, 0, 0, .4);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container" id="main_container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="dropdown">
+                <span class="custom-dropdown big">
+                    <select>
+                        <option>Mumbai</option>
+                        <option>Hyderabad</option>
+                        <option>Agartala</option>
+                        <option>Chennai</option>
+                        <option>Kolkata</option>
+                    </select>
+                </span>
+                </div>
+
+            </div>
+            <div class="col-md-5">
+                <div class="search_container">
+                    <i class="material-icons">search</i>
+                    <input type="text" class="search_by_name" id="myInput" placeholder="Search for bank names.." title="Type in a bank name">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="monthly_log_datatable">
+                    <table class="table fyle_container fixed_header" id="example">
+                        <thead>
+                            <tr>
+                                <th>Bank ID</th>
+                                <th>IFSC</th>
+                                <th>Branch</th>
+                                <th>Address</th>
+                                <th>City</th>
+                                <th>District</th>
+                                <th>State</th>
+                                <th>Bank Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    var dictOneObj = [];
+var employee_list = [];
+$(document).ready(function() {
+	var temp_url = 'https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI';
+	renderTable(temp_url);
+	var dataTable;
+
+	function renderTable(temp_url) {
+		dataTable = $('#example').DataTable({
+			processing: false,
+			bFilter: false,
+			retrieve: true,
+			bSortable: false,
+			oLanguage: {
+				sLengthMenu: 'Show _MENU_ '
+			},
+			// "ordering": false,
+			bSort: false,
+			dom: '<"top"i>rt<"bottom"flp><"clear">',
+
+			ajax: {
+				url: temp_url,
+				dataSrc: ''
+			},
+			columns: [
+				{
+					data: 'bank_id'
+				},
+				{
+					data: 'ifsc'
+				},
+				{
+					data: 'branch'
+				},
+				{
+					data: 'address'
+				},
+				{
+					data: 'city'
+				},
+				{
+					data: 'district'
+				},
+				{
+					data: 'state'
+				},
+				{
+					data: 'bank_name'
+				}
+			]
+		});
+	}
+
+	$.ajax({
+		url: 'https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI',
+		dataType: 'json',
+		success: function(data) {
+			var counter = 0;
+			for (var k = 0; k < data.length; k++) {
+				dictOneObj[counter] = {};
+				dictOneObj[counter] = {
+					setUUid: data[k].bank_id,
+					setName: data[k].bank_name,
+					ifsc: data[k].ifsc,
+					state: data[k].state,
+					city: data[k].city,
+					address: data[k].address,
+					branch: data[k].branch,
+					district: data[k].district
+				};
+				counter = counter + 1;
+			}
+			console.log('dictOneObj', dictOneObj);
+			// $.each(data,function(index,item){
+			//     var temp
+			//     dictOneObj.push(item.bank_name);
+			// });
+			$.each(dictOneObj, function(i, o) {
+				var temp = {};
+				temp['id'] = o.setUUid;
+				temp['name'] = o.setName;
+				(temp['ifsc'] = o.ifsc),
+					(temp['state'] = o.state),
+					(temp['city'] = o.city),
+					(temp['address'] = o.address),
+					(temp['branch'] = o.branch),
+					(temp['district'] = o.district);
+				employee_list.push(temp);
+			});
+			var $hr_input = $('.search_by_name');
+			$hr_input.typeahead({
+				items: 10,
+				autoSelect: true,
+				minLength: 2,
+				source: employee_list,
+				autoSelect: true,
+				afterSelect: function(data) {
+					debugger;
+					$('.typeahead li').attr('data_emp_uuid', data.id);
+					var active_attr = $('.typeahead li.active').attr('data_emp_uuid');
+					var emplNameurl = 'https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI?bank_id=' + active_attr;
+					// getMonthlyLog(emplNameurl);
+					renderTable(emplNameurl);
+					// dataTable.clear().draw();
+					// dataTable.rows.add(data); // Add new data
+					dataTable.clear().rows.add(data).draw();
+					// var table = $('#example').DataTable();
+					// table.rows.add(data).draw();
+					var table = $('#example').DataTable();
+					table.rows
+						.add(
+							$(
+								'<tr>' +
+									'  <td>' +
+									data.id +
+									'</td>' +
+									'  <td>' +
+									data.ifsc +
+									'</td>' +
+									'  <td>' +
+									data.branch +
+									'</td>' +
+									'  <td>' +
+									data.address +
+									'</td>' +
+									'  <td>' +
+									data.city +
+									'</td>' +
+									'  <td>' +
+									data.district +
+									'</td>' +
+									'  <td>' +
+									data.state +
+									'</td>' +
+									'  <td>' +
+									data.name +
+									'</td>' +
+									'</tr>'
+							)
+						)
+						.draw();
+				}
+			});
+		},
+		type: 'GET'
+	});
+});
+
+    </script>
+</body>
+</html>
